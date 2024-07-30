@@ -27,9 +27,15 @@ class _HomeViewState extends State<HomeView> {
     });
   }
 
+  void hiddenMenu(){
+    setState(() {
+      showWindows = false;
+    });
+  }
+
   List<XFile>? images = [];
   List<MessageModel> messages = [];
-  late final ImagePicker imagePicker;
+  final imagePicker = ImagePicker();
   Future<void> selectImages() async {
     final imagesSelected = await imagePicker.pickMultiImage();
     setState(() {
@@ -120,8 +126,8 @@ class _HomeViewState extends State<HomeView> {
                     icon: Iconsax.image,
                     text: 'Galeria',
                     onTap: () {
+                      hiddenMenu();
                       selectImages();
-                      onItemTaped();
                     },
                   ),
                   MenuItemTile(
