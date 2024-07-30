@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:appchat_with_gemini/app/page/home/model/message_model.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'components/menu.dart';
 import 'components/menu_item.dart';
@@ -17,13 +20,22 @@ class _HomeViewState extends State<HomeView> {
   late final TextEditingController inputController;
   bool isNoEmpty = false;
   bool showWindows = false;
+  bool containsImage = false;
   void onItemTaped() {
     setState(() {
       showWindows = !showWindows;
     });
   }
 
+  List<XFile>? images = [];
   List<MessageModel> messages = [];
+  late final ImagePicker imagePicker;
+  Future<void> selectImages() async {
+    final imagesSelected = await imagePicker.pickMultiImage();
+    setState(() {
+      images = imagesSelected;
+    });
+  }
 
   void sendMessages() {
     setState(() {
@@ -77,22 +89,50 @@ class _HomeViewState extends State<HomeView> {
                 ),
               ),
             ),
+            AnimatedPositioned(
+              bottom: !showWindows && images != null ? 65 : -150,
+              duration: const Duration(milliseconds: 800),
+              child: Container(
+                color: Colors.yellow.shade700,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: images!
+                      .map(
+                        (i) => ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Image.file(
+                            File(i.path),fit: BoxFit.cover,
+                            width: 100,
+                            height: 80,
+                          ),
+                        ),
+                      )
+                      .toList(),
+                ),
+              ),
+            ),
             Menu(
               showWindows: showWindows,
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   MenuItemTile(
                     icon: Iconsax.image,
                     text: 'Galeria',
+                    onTap: () {
+                      selectImages();
+                      onItemTaped();
+                    },
                   ),
                   MenuItemTile(
                     icon: Iconsax.document,
                     text: 'Documento',
+                    onTap: () {},
                   ),
                   MenuItemTile(
                     icon: Iconsax.audio_square,
                     text: 'Áudio',
+                    onTap: () {},
                   ),
                 ],
               ),

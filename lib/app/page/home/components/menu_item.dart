@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 class MenuItemTile extends StatelessWidget {
   final IconData icon;
   final String text;
-  const MenuItemTile({super.key, required this.icon, required this.text});
+  final VoidCallback onTap;
+  const MenuItemTile({super.key, required this.icon, required this.text, required this.onTap});
 
   @override
   Widget build(BuildContext context) {

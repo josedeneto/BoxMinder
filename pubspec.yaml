@@ -10,6 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   iconsax: ^0.0.8
+  image_picker: ^1.1.2
 
 dev_dependencies:
   flutter_test:
