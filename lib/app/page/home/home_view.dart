@@ -98,13 +98,13 @@ class _HomeViewState extends State<HomeView> {
             AnimatedPositioned(
               bottom: !showWindows && images != null ? 65 : -150,
               duration: const Duration(milliseconds: 800),
-              child: Container(
-                color: Colors.yellow.shade700,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: images!
-                      .map(
-                        (i) => ClipRRect(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: images!
+                    .map(
+                      (i) => Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 2),
+                        child: ClipRRect(
                           borderRadius: BorderRadius.circular(8),
                           child: Image.file(
                             File(i.path),fit: BoxFit.cover,
@@ -112,9 +112,9 @@ class _HomeViewState extends State<HomeView> {
                             height: 80,
                           ),
                         ),
-                      )
-                      .toList(),
-                ),
+                      ),
+                    )
+                    .toList(),
               ),
             ),
             Menu(
