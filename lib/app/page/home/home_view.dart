@@ -98,23 +98,25 @@ class _HomeViewState extends State<HomeView> {
             AnimatedPositioned(
               bottom: !showWindows && images != null ? 65 : -150,
               duration: const Duration(milliseconds: 800),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: images!
-                    .map(
-                      (i) => Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 2),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: Image.file(
-                            File(i.path),fit: BoxFit.cover,
-                            width: 100,
-                            height: 80,
+              child: SingleChildScrollView(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: images!
+                      .map(
+                        (i) => Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 2),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Image.file(
+                              File(i.path),fit: BoxFit.cover,
+                              width: 100,
+                              height: 80,
+                            ),
                           ),
                         ),
-                      ),
-                    )
-                    .toList(),
+                      )
+                      .toList(),
+                ),
               ),
             ),
             Menu(
