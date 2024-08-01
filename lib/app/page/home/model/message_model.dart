@@ -1,11 +1,11 @@
 class MessageModel {
-  final String message;
+  final String? message;
   final bool isSentByme;
-  final String? image;
+  final List<String>? images;
   MessageModel({
     required this.message,
     required this.isSentByme,
-    this.image
+    this.images
   });
   
 }

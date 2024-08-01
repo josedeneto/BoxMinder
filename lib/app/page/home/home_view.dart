@@ -18,7 +18,7 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   late final TextEditingController inputController;
-  bool isNoEmpty = false;
+  bool iNoEmpty = false;
   bool showWindows = false;
   bool containsImage = false;
   void onItemTaped() {
@@ -27,7 +27,7 @@ class _HomeViewState extends State<HomeView> {
     });
   }
 
-  void hiddenMenu(){
+  void hiddenMenu() {
     setState(() {
       showWindows = false;
     });
@@ -46,17 +46,26 @@ class _HomeViewState extends State<HomeView> {
   void sendMessages() {
     setState(() {
       messages.insert(
-          0, MessageModel(message: inputController.text, isSentByme: true));
+        0,
+        MessageModel(
+          message: inputController.text,
+          isSentByme: true,
+          images: images?.map((image)=>image.path).toList()
+        ),
+      );
       inputController.clear();
+      images= [];
     });
 
     Future.delayed(const Duration(seconds: 2), () {
       setState(() {
         messages.insert(
-            0,
-            MessageModel(
-                message: "Reply to ${inputController.text}",
-                isSentByme: false));
+          0,
+          MessageModel(
+            message: "Reply to ${inputController.text}",
+            isSentByme: false,
+          ),
+        );
       });
     });
   }
@@ -98,24 +107,30 @@ class _HomeViewState extends State<HomeView> {
             AnimatedPositioned(
               bottom: !showWindows && images != null ? 65 : -150,
               duration: const Duration(milliseconds: 800),
-              child: SingleChildScrollView(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: images!
-                      .map(
-                        (i) => Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 2),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: Image.file(
-                              File(i.path),fit: BoxFit.cover,
-                              width: 100,
-                              height: 80,
+              child: SizedBox(
+                 width: MediaQuery.of(context).size.width,
+                height: 80,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: images!
+                        .map(
+                          (i) => Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 2),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Image.file(
+                                File(i.path),
+                                fit: BoxFit.cover,
+                                width: 100,
+                                height: 80,
+                              ),
                             ),
                           ),
-                        ),
-                      )
-                      .toList(),
+                        )
+                        .toList(),
+                  ),
                 ),
               ),
             ),
@@ -157,12 +172,7 @@ class _HomeViewState extends State<HomeView> {
                     style: const TextStyle(color: Colors.white),
                     onChanged: (value) {
                       setState(() {
-                        inputController.text = value;
-                        if (inputController.text.isNotEmpty) {
-                          isNoEmpty = true;
-                        } else {
-                          isNoEmpty = false;
-                        }
+                        inputController.text = value;        
                       });
                     },
                     controller: inputController,
@@ -195,19 +205,19 @@ class _HomeViewState extends State<HomeView> {
                             width: 5,
                           ),
                           GestureDetector(
-                            onTap: () {
+                            onTap: inputController.text.isEmpty && images!.isEmpty?null: () {
                               sendMessages();
                             },
                             child: Padding(
                               padding: const EdgeInsets.all(6.0),
                               child: CircleAvatar(
                                 maxRadius: 20,
-                                backgroundColor: isNoEmpty
+                                backgroundColor: inputController.text.isNotEmpty||images!.isNotEmpty
                                     ? Colors.white
                                     : const Color.fromARGB(255, 37, 37, 37),
                                 child: Icon(
                                   Icons.arrow_upward_outlined,
-                                  color: isNoEmpty ? Colors.black : Colors.grey,
+                                  color: inputController.text.isNotEmpty || images!.isNotEmpty ? Colors.black : Colors.grey,
                                 ),
                               ),
                             ),
