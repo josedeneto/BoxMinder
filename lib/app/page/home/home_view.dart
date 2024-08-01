@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:appchat_with_gemini/app/page/home/model/message_model.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'components/menu.dart';
 import 'components/menu_item.dart';
@@ -18,7 +20,6 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   late final TextEditingController inputController;
-  bool iNoEmpty = false;
   bool showWindows = false;
   bool containsImage = false;
   void onItemTaped() {
@@ -36,6 +37,39 @@ class _HomeViewState extends State<HomeView> {
   List<XFile>? images = [];
   List<MessageModel> messages = [];
   final imagePicker = ImagePicker();
+  Future<void> checkAndRequestPermission() async {
+  final snackBar = ScaffoldMessenger.of(context);
+  var permission = await Permission.storage.status;
+
+  if (permission.isDenied) {
+    permission = await Permission.storage.request();
+  }
+  
+  if (permission.isGranted) {
+    selectImages();
+  } else if (permission.isDenied) {
+    Fluttertoast.showToast(
+    msg: "Permissão negada",
+    toastLength: Toast.LENGTH_SHORT,
+    gravity: ToastGravity.CENTER,
+    textColor: Colors.white,
+    backgroundColor: const Color.fromARGB(100, 0, 0, 0),
+  );
+  } else if (permission.isPermanentlyDenied) {
+    snackBar.showSnackBar(
+      SnackBar(
+        content: const Text('Permissão permanentemente negada. Abra as configurações para conceder permissão.'),
+        backgroundColor: Colors.red.shade700,
+        action: SnackBarAction(
+          textColor: Colors.white,
+          label: 'Abrir Configurações',
+          onPressed: () => openAppSettings(),
+        ),
+      ),
+    );
+  }
+}
+
   Future<void> selectImages() async {
     final imagesSelected = await imagePicker.pickMultiImage();
     setState(() {
@@ -48,13 +82,12 @@ class _HomeViewState extends State<HomeView> {
       messages.insert(
         0,
         MessageModel(
-          message: inputController.text,
-          isSentByme: true,
-          images: images?.map((image)=>image.path).toList()
-        ),
+            message: inputController.text,
+            isSentByme: true,
+            images: images?.map((image) => image.path).toList()),
       );
       inputController.clear();
-      images= [];
+      images = [];
     });
 
     Future.delayed(const Duration(seconds: 2), () {
@@ -73,6 +106,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     inputController = TextEditingController();
+
     super.initState();
   }
 
@@ -108,7 +142,7 @@ class _HomeViewState extends State<HomeView> {
               bottom: !showWindows && images != null ? 65 : -150,
               duration: const Duration(milliseconds: 800),
               child: SizedBox(
-                 width: MediaQuery.of(context).size.width,
+                width: MediaQuery.of(context).size.width,
                 height: 80,
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
@@ -144,7 +178,7 @@ class _HomeViewState extends State<HomeView> {
                     text: 'Galeria',
                     onTap: () {
                       hiddenMenu();
-                      selectImages();
+                      checkAndRequestPermission();
                     },
                   ),
                   MenuItemTile(
@@ -172,7 +206,7 @@ class _HomeViewState extends State<HomeView> {
                     style: const TextStyle(color: Colors.white),
                     onChanged: (value) {
                       setState(() {
-                        inputController.text = value;        
+                        inputController.text = value;
                       });
                     },
                     controller: inputController,
@@ -205,19 +239,27 @@ class _HomeViewState extends State<HomeView> {
                             width: 5,
                           ),
                           GestureDetector(
-                            onTap: inputController.text.isEmpty && images!.isEmpty?null: () {
-                              sendMessages();
-                            },
+                            onTap:
+                                inputController.text.isEmpty && images!.isEmpty
+                                    ? null
+                                    : () {
+                                        sendMessages();
+                                      },
                             child: Padding(
                               padding: const EdgeInsets.all(6.0),
                               child: CircleAvatar(
                                 maxRadius: 20,
-                                backgroundColor: inputController.text.isNotEmpty||images!.isNotEmpty
-                                    ? Colors.white
-                                    : const Color.fromARGB(255, 37, 37, 37),
+                                backgroundColor:
+                                    inputController.text.isNotEmpty ||
+                                            images!.isNotEmpty
+                                        ? Colors.white
+                                        : const Color.fromARGB(255, 37, 37, 37),
                                 child: Icon(
                                   Icons.arrow_upward_outlined,
-                                  color: inputController.text.isNotEmpty || images!.isNotEmpty ? Colors.black : Colors.grey,
+                                  color: inputController.text.isNotEmpty ||
+                                          images!.isNotEmpty
+                                      ? Colors.black
+                                      : Colors.grey,
                                 ),
                               ),
                             ),
