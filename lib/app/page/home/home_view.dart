@@ -22,6 +22,9 @@ class _HomeViewState extends State<HomeView> {
   late final TextEditingController inputController;
   bool showWindows = false;
   bool containsImage = false;
+  late FocusNode _focusNode;
+  bool _isTextFieldFocused = false;
+  bool showWelcomeMessage = true;
   void onItemTaped() {
     setState(() {
       showWindows = !showWindows;
@@ -88,6 +91,8 @@ class _HomeViewState extends State<HomeView> {
       );
       inputController.clear();
       images = [];
+      showWelcomeMessage = false;
+
     });
 
     Future.delayed(const Duration(seconds: 2), () {
@@ -103,16 +108,30 @@ class _HomeViewState extends State<HomeView> {
     });
   }
 
+
   @override
   void initState() {
-    inputController = TextEditingController();
-
+   inputController = TextEditingController();
+    _focusNode = FocusNode();
+  _focusNode.addListener((){
+      if(_focusNode.hasFocus|| inputController.text.isNotEmpty){
+        setState(() {
+        showWelcomeMessage = !showWelcomeMessage;
+      });
+      }else{
+        setState(() {
+          showWelcomeMessage = true;
+        });
+      }
+    });
+  
     super.initState();
   }
 
   @override
   void dispose() {
     inputController.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 
@@ -124,6 +143,22 @@ class _HomeViewState extends State<HomeView> {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Stack(
           children: [
+            if(showWelcomeMessage)
+            const Align(
+              alignment: Alignment.center,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  CircleAvatar(maxRadius: 26,backgroundColor: Colors.white,child: Icon(Iconsax.dcube, size: 33,),),
+                   SizedBox(height: 10,),
+                   Text('BOXAI', style: TextStyle(fontSize: 20,color: Colors.white),),
+                    SizedBox(height: 10,),
+                  Text('Olá, sou a BoxAI! Com o poder do Gemini por trás de mim, estou aqui para tornar sua experiência incrível. Pergunte o que quiser, e eu farei o meu melhor para ajudar, no idioma que você preferir.',textAlign: TextAlign.center, style: TextStyle(color: Color(0xff444746), fontWeight: FontWeight.w400),)
+                ],
+              ),
+            ),
             GestureDetector(
               onTap: onItemTaped,
               child: Padding(
@@ -210,6 +245,7 @@ class _HomeViewState extends State<HomeView> {
                       });
                     },
                     controller: inputController,
+                    focusNode: _focusNode,
                     decoration: InputDecoration(
                       prefixIcon: GestureDetector(
                         onTap: () {
