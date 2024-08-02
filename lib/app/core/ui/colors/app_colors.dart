@@ -11,7 +11,7 @@ class AppColors{
     return _instance!;
   }
   
-  static Color  primary = const Color(0XFF09090B);
+  Color get primary => const Color(0XFF09090B);
   Color get title => const Color(0XFFFAFAFA);
   Color get text => const Color(0XFFD4D4D8);
   Color get border => const Color(0XFF27272A);
