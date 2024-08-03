@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'core/ui/theme/app_theme.dart';
 import 'page/home/home_view.dart';
+import 'page/splash/splash_view.dart';
 
 class AppBoxMinder extends StatelessWidget {
   const AppBoxMinder({super.key});
@@ -16,7 +17,7 @@ class AppBoxMinder extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: AppTheme.theme,
-        home: const HomeView(),
+        home: const SplashView(),
       ),
     );
   }
