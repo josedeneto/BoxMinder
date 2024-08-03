@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:appchat_with_gemini/app/core/ui/colors/app_colors.dart';
+import 'package:appchat_with_gemini/app/core/ui/style/app_typography.dart';
 import 'package:appchat_with_gemini/app/page/home/model/message_model.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -144,18 +146,18 @@ class _HomeViewState extends State<HomeView> {
         child: Stack(
           children: [
             if(showWelcomeMessage)
-            const Align(
+             Align(
               alignment: Alignment.center,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  CircleAvatar(maxRadius: 26,backgroundColor: Colors.white,child: Icon(Iconsax.dcube, size: 33,),),
-                   SizedBox(height: 10,),
-                   Text('BOXAI', style: TextStyle(fontSize: 20,color: Colors.white),),
-                    SizedBox(height: 10,),
-                  Text('Olá, sou a BoxAI! Com o poder do Gemini por trás de mim, estou aqui para tornar sua experiência incrível. Pergunte o que quiser, e eu farei o meu melhor para ajudar, no idioma que você preferir.',textAlign: TextAlign.center, style: TextStyle(color: Color(0xff444746), fontWeight: FontWeight.w400),)
+                   CircleAvatar(maxRadius: 26,backgroundColor: Colors.white,child: Icon(Iconsax.dcube, size: 33,color: AppColors.i.primary,),),
+                  const  SizedBox(height: 10,),
+                   Text('BOXAI', style: AppTypography.i.bold,),
+                    const SizedBox(height: 10,),
+                  Text('Olá, sou a BoxAI! Com o poder do Gemini por trás de mim, estou aqui para tornar sua experiência incrível. Pergunte o que quiser, e eu farei o meu melhor para ajudar, no idioma que você preferir.',textAlign: TextAlign.center, style:AppTypography.i.light.copyWith(fontWeight: FontWeight.w400),)
                 ],
               ),
             ),

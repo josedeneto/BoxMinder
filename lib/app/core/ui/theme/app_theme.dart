@@ -1,13 +1,14 @@
+import 'package:appchat_with_gemini/app/core/ui/style/app_typography.dart';
 import 'package:flutter/material.dart';
+
+import '../colors/app_colors.dart';
 
 class AppTheme {
   static ThemeData theme = ThemeData(
+    fontFamily: AppTypography.i.fontFamily,
     inputDecorationTheme: InputDecorationTheme(
       isDense: true,
-      hintStyle: const TextStyle(
-        color: Color(0XFF737373),
-        fontWeight: FontWeight.normal,
-      ),
+      hintStyle: AppTypography.i.medium.copyWith(color: AppColors.i.hintTextField,fontSize: 15),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(50),
         borderSide: const BorderSide(
