@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'core/ui/theme/app_theme.dart';
+import 'page/sign/sign_in_view.dart';
 import 'page/splash/splash_view.dart';
 
 class AppBoxMinder extends StatelessWidget {
@@ -16,7 +17,7 @@ class AppBoxMinder extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: AppTheme.theme,
-        home: const SplashView(),
+        home: const SignInView(),
       ),
     );
   }

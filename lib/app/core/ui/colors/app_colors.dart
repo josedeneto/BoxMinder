@@ -17,7 +17,7 @@ class AppColors {
   Color get border => const Color(0XFF27272A);
   Color get hintTextField => const  Color(0XFF4D4D4D);
   Color get green => const Color(0XFF6EE7B7);
-  Color get button => const Color(0XFFE4E4E7);
+  Color get button => const Color(0XFFE4E4E7); 
   Color get textButton => const Color(0XFF27272A);
   Color get grey => const Color(0XFF343434);
   Color get greyShade400 => Colors.grey.shade400;

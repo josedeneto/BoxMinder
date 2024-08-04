@@ -12,7 +12,7 @@ class AppTheme {
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(50),
         borderSide: const BorderSide(
-          color: Color(0XFF343434),
+         // color: Color(0XFF343434),
         ),
       ),
       focusedBorder: OutlineInputBorder(
