@@ -1,6 +1,7 @@
 import 'package:appchat_with_gemini/app/core/ui/colors/app_colors.dart';
 import 'package:appchat_with_gemini/app/core/ui/style/app_typography.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:iconsax/iconsax.dart';
 
 class SignInView extends StatefulWidget {
@@ -125,13 +126,13 @@ class _SignUpViewState extends State<SignInView> {
                             elevation: 1,
                             backgroundColor: AppColors.i.button,
                             shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12)),
+                                borderRadius: BorderRadius.circular(12),),
                             foregroundColor: AppColors.i.primary),
                         child: Text(
                           'Criar conta',
                           style: AppTypography.i.extraLight.copyWith(
                               color: AppColors.i.primary,
-                              fontWeight: FontWeight.w400),
+                              fontWeight: FontWeight.w400,),
                         ),
                       ),
                     )
@@ -140,27 +141,29 @@ class _SignUpViewState extends State<SignInView> {
               ),
               Align(
                 alignment: Alignment.bottomCenter,
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Color.fromARGB(255, 51, 51, 66)),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const FlutterLogo(),
-                        Text(
-                          'Entrar com Google',
-                          style: AppTypography.i.medium,
-                        ),
-                        Icon(
-                          Icons.arrow_forward_ios_rounded,
-                          color: AppColors.i.border,
-                          size: 16,
-                        )
-                      ],
+                child: GestureDetector(
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Color.fromARGB(255, 51, 51, 66)),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                           SvgPicture.asset('assets/images/google_logo.svg',),
+                          Text(
+                            'Entrar com Google',
+                            style: AppTypography.i.medium,
+                          ),
+                         const Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            color: Color.fromARGB(255, 51, 51, 66),
+                            size: 16,
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),
