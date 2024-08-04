@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'core/ui/theme/app_theme.dart';
 import 'page/splash/splash_view.dart';
 
-class AppBoxMinder extends StatelessWidget {
-  const AppBoxMinder({super.key});
+class AppBoxAi extends StatelessWidget {
+  const AppBoxAi({super.key});
 
   @override
   Widget build(BuildContext context) {
