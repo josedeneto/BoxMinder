@@ -2,7 +2,6 @@ import 'package:appchat_with_gemini/app/core/ui/colors/app_colors.dart';
 import 'package:appchat_with_gemini/app/core/ui/style/app_style.dart';
 import 'package:appchat_with_gemini/app/core/ui/style/app_typography.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '../../core/ui/widgets/custom_button.dart';

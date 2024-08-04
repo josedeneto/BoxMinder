@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:appchat_with_gemini/app/core/ui/colors/app_colors.dart';
-import 'package:appchat_with_gemini/app/core/ui/style/app_style.dart';
 import 'package:appchat_with_gemini/app/core/ui/style/app_typography.dart';
 import 'package:appchat_with_gemini/app/page/home/components/suggested_question.dart';
 import 'package:appchat_with_gemini/app/page/home/model/message_model.dart';
@@ -27,7 +26,6 @@ class _HomeViewState extends State<HomeView> {
   bool showWindows = false;
   bool containsImage = false;
   late FocusNode _focusNode;
-  bool _isTextFieldFocused = false;
   bool showWelcomeMessage = true;
   void onItemTaped() {
     setState(() {
