@@ -141,7 +141,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0XFF1C1C1C),
+      backgroundColor:AppColors.i.primary, //const Color(0XFF1C1C1C),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -252,7 +252,7 @@ class _HomeViewState extends State<HomeView> {
                           width: 150,
                           child: DecoratedBox(
                             decoration: BoxDecoration(
-                              border: Border.all(color: AppColors.i.border),
+                              border: Border.all(color: AppColors.i.borderSide),
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: Padding(
@@ -336,7 +336,7 @@ class _HomeViewState extends State<HomeView> {
                 child: SizedBox(
                   width: MediaQuery.sizeOf(context).width,
                   child: ColoredBox(
-                    color: const Color(0XFF1C1C1C),
+                    color:AppColors.i.primary,
                     child: TextFormField(
                       style: const TextStyle(color: Colors.white),
                       onChanged: (value) {
@@ -351,9 +351,9 @@ class _HomeViewState extends State<HomeView> {
                           onTap: () {
                             onItemTaped();
                           },
-                          child: const Icon(
+                          child:  Icon(
                             Icons.attach_file_rounded,
-                            color: Colors.white,
+                            color: AppColors.i.text,
                             size: 23,
                           ),
                         ),
@@ -365,9 +365,9 @@ class _HomeViewState extends State<HomeView> {
                             if (inputController.text.isEmpty)
                               GestureDetector(
                                 onTap: () {},
-                                child: const Icon(
+                                child:  Icon(
                                   Icons.mic_none_rounded,
-                                  color: Colors.white,
+                                  color: AppColors.i.text,
                                   size: 26,
                                 ),
                               ),
@@ -388,14 +388,14 @@ class _HomeViewState extends State<HomeView> {
                                   backgroundColor: inputController
                                               .text.isNotEmpty ||
                                           images!.isNotEmpty
-                                      ? Colors.white
-                                      : const Color.fromARGB(255, 37, 37, 37),
-                                  child: Icon(
-                                    Icons.arrow_upward_outlined,
+                                      ? AppColors.i.text
+                                      : AppColors.i.disableButton,
+                                  child: Icon(Iconsax.send_1,
+                                   // Icons.arrow_upward_outlined,
                                     color: inputController.text.isNotEmpty ||
                                             images!.isNotEmpty
-                                        ? Colors.black
-                                        : Colors.grey,
+                                        ? AppColors.i.primary
+                                        : AppColors.i.secondaryHintColor,
                                   ),
                                 ),
                               ),

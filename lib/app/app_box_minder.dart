@@ -1,3 +1,4 @@
+import 'package:appchat_with_gemini/app/page/home/home_view.dart';
 import 'package:appchat_with_gemini/app/page/sign_up/sign_up_view.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +19,7 @@ class AppBoxMinder extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: AppTheme.theme,
-        home: const SignUpView(),
+        home: const HomeView(),
       ),
     );
   }

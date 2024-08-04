@@ -1,8 +1,12 @@
 import 'package:appchat_with_gemini/app/core/ui/colors/app_colors.dart';
+import 'package:appchat_with_gemini/app/core/ui/style/app_style.dart';
 import 'package:appchat_with_gemini/app/core/ui/style/app_typography.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:iconsax/iconsax.dart';
+
+import '../../core/ui/widgets/custom_button.dart';
+import '../../core/ui/widgets/login_button_with_google.dart';
 
 class SignInView extends StatefulWidget {
   const SignInView({super.key});
@@ -60,23 +64,17 @@ class _SignUpViewState extends State<SignInView> {
                     ),
                     TextFormField(
                       decoration: InputDecoration(
-                        //   filled: true,
                         hintStyle: AppTypography.i.regular.copyWith(
-                            color: Color.fromARGB(255, 51, 51, 66),
-                            fontSize: 14),
-                        // fillColor: Color.fromARGB(255, 13, 13, 15),
-                        prefixIcon: const Icon(
+                          color: AppColors.i.secondaryHintColor,
+                          fontSize: 14,
+                        ),
+                        prefixIcon: Icon(
                           Iconsax.direct_right,
-                          color: Color.fromARGB(255, 51, 51, 66),
+                          color: AppColors.i.secondaryHintColor,
                         ),
                         hintText: 'E-mail',
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(
-                                color: Color.fromARGB(255, 29, 29, 39))),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: Colors.red)),
+                        enabledBorder:AppStyle.i.defaulTextFieldBorder ,
+                        border:AppStyle.i.defaulTextFieldBorder,
                       ),
                     ),
                     const SizedBox(
@@ -84,24 +82,17 @@ class _SignUpViewState extends State<SignInView> {
                     ),
                     TextFormField(
                       decoration: InputDecoration(
-                        // filled: true,
                         hintStyle: AppTypography.i.regular.copyWith(
-                            color: Color.fromARGB(255, 51, 51, 66),
-                            fontSize:
-                                14), //TextStyle(color: AppColors.i.hintTextField,fontSize: 14),
-                        //  fillColor: Color.fromARGB(255, 13, 13, 15),
+                            color: AppColors.i.secondaryHintColor,
+                            fontSize: 14),
                         prefixIcon: Icon(
                           Iconsax.lock,
-                          color: Color.fromARGB(255, 51, 51, 66),
+                          color: AppColors.i.secondaryHintColor,
                         ),
                         hintText: 'Senha',
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(
-                                color: Color.fromARGB(255, 23, 23, 32))),
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                        ),
+                        focusedBorder: AppStyle.i.defaulTextFieldBorder,
+                        enabledBorder: AppStyle.i.defaulTextFieldBorder,
+                        border: AppStyle.i.defaulTextFieldBorder,
                       ),
                     ),
                     Align(
@@ -120,20 +111,9 @@ class _SignUpViewState extends State<SignInView> {
                     SizedBox(
                       width: double.infinity,
                       height: 45,
-                      child: ElevatedButton(
+                      child: CustomButton(
+                        text: 'Entrar',
                         onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                            elevation: 1,
-                            backgroundColor: AppColors.i.button,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),),
-                            foregroundColor: AppColors.i.primary),
-                        child: Text(
-                          'Criar conta',
-                          style: AppTypography.i.extraLight.copyWith(
-                              color: AppColors.i.primary,
-                              fontWeight: FontWeight.w400,),
-                        ),
                       ),
                     )
                   ],
@@ -141,31 +121,9 @@ class _SignUpViewState extends State<SignInView> {
               ),
               Align(
                 alignment: Alignment.bottomCenter,
-                child: GestureDetector(
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Color.fromARGB(255, 51, 51, 66)),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                           SvgPicture.asset('assets/images/google_logo.svg',),
-                          Text(
-                            'Entrar com Google',
-                            style: AppTypography.i.medium,
-                          ),
-                         const Icon(
-                            Icons.arrow_forward_ios_rounded,
-                            color: Color.fromARGB(255, 51, 51, 66),
-                            size: 16,
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
+                child: LoginButtonWithGoogle(
+                  text: 'Entrar com Google',
+                  onTap: () {},
                 ),
               )
             ],

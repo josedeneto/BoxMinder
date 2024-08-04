@@ -21,5 +21,8 @@ class AppColors {
   Color get textButton => const Color(0XFF27272A);
   Color get grey => const Color(0XFF343434);
   Color get greyShade400 => Colors.grey.shade400;
+ Color get secondaryHintColor => const Color.fromARGB(255, 51, 51, 66); 
+ Color get borderSide => const Color.fromARGB(255, 23, 23, 32);
+ Color get disableButton => const Color.fromARGB(59, 51, 51, 66);
 }
 //#3F3F46  #505050/ 4D4D4D 898989

@@ -1,10 +1,11 @@
 import 'package:appchat_with_gemini/app/core/ui/colors/app_colors.dart';
+import 'package:appchat_with_gemini/app/core/ui/widgets/custom_button.dart';
 import 'package:appchat_with_gemini/app/page/sign_in/sign_in_view.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../core/ui/style/app_typography.dart';
+import '../../core/ui/widgets/login_button_with_google.dart';
 
 class SignUpView extends StatefulWidget {
   const SignUpView({super.key});
@@ -28,7 +29,7 @@ class _SignUpViewState extends State<SignUpView> {
               children: [
                 CircleAvatar(
                   radius: 20,
-                  backgroundColor: Colors.white,
+                  backgroundColor: AppColors.i.white,
                   child: Icon(
                     Iconsax.dcube,
                     size: 33,
@@ -42,8 +43,10 @@ class _SignUpViewState extends State<SignUpView> {
                   alignment: Alignment.center,
                   child: Text(
                     'Bem-vindo👋',
-                    style: AppTypography.i.extraLight
-                        .copyWith(fontSize: 24, fontWeight: FontWeight.w600),
+                    style: AppTypography.i.extraLight.copyWith(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
                 const SizedBox(
@@ -51,44 +54,17 @@ class _SignUpViewState extends State<SignUpView> {
                 ),
                 SizedBox(
                   height: 45,
-                  child: ElevatedButton(
+                  child: CustomButton(
+                    text: 'Regista-se gratuitamente',
                     onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                        elevation: 1,
-                        backgroundColor: AppColors.i.button,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        foregroundColor: AppColors.i.primary),
-                    child: const Text('Regista-se gratuitamente'),
                   ),
                 ),
                 const SizedBox(
                   height: 20,
                 ),
-                DecoratedBox(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Color.fromARGB(255, 51, 51, 66)),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SvgPicture.asset('assets/images/google_logo.svg',),
-                        Text(
-                          'Continuar com Google',
-                          style: AppTypography.i.medium,
-                        ),
-                        Icon(
-                          Icons.arrow_forward_ios_rounded,
-                          color: Color.fromARGB(255, 51, 51, 66),
-                          size: 16,
-                        )
-                      ],
-                    ),
-                  ),
+                LoginButtonWithGoogle(
+                  text: 'Continuar com Google',
+                  onTap: () {},
                 ),
                 const SizedBox(
                   height: 25,

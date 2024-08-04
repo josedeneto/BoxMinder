@@ -15,7 +15,7 @@ class SuggestedQuestion extends StatelessWidget {
         height: 80,
         child: DecoratedBox(
           decoration: BoxDecoration(
-            border: Border.all(color: AppColors.i.border),
+            border: Border.all(color: AppColors.i.borderSide),
             borderRadius: BorderRadius.circular(12),
           ),
           child: Padding(
@@ -23,7 +23,7 @@ class SuggestedQuestion extends StatelessWidget {
             child: Text(
               question,
               style: AppTypography.i.regular.copyWith(
-                color: AppColors.i.hintTextField,
+                color: AppColors.i.secondaryHintColor,
               ),
             ),
           ),
