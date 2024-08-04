@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'core/ui/theme/app_theme.dart';
-import 'page/home/home_view.dart';
 import 'page/splash/splash_view.dart';
 
 class AppBoxMinder extends StatelessWidget {
