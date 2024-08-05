@@ -1,3 +1,4 @@
+import 'package:appchat_with_gemini/app/core/ui/colors/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class Menu extends StatelessWidget {
@@ -18,9 +19,9 @@ class Menu extends StatelessWidget {
       right: 0,
       child: Container(
         decoration: BoxDecoration(
-          color: const Color(0XFF1C1C1C),
+          color:AppColors.i.primary,
           border: Border.all(
-            color: const Color(0XFF343434),
+            color: AppColors.i.borderSide,
           ),
           borderRadius: BorderRadius.circular(16),
         ),

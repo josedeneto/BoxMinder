@@ -1,3 +1,5 @@
+import 'package:appchat_with_gemini/app/core/ui/colors/app_colors.dart';
+import 'package:appchat_with_gemini/app/core/ui/style/app_typography.dart';
 import 'package:flutter/material.dart';
 
 class MenuItemTile extends StatelessWidget {
@@ -15,9 +17,9 @@ class MenuItemTile extends StatelessWidget {
         children: [
           DecoratedBox(
             decoration: BoxDecoration(
-              color: const Color.fromARGB(255, 26, 26, 26),
+              
               border: Border.all(
-                color: const Color(0XFF343434),
+                color: AppColors.i.borderSide,
               ),
               borderRadius: BorderRadius.circular(10),
             ),
@@ -25,17 +27,14 @@ class MenuItemTile extends StatelessWidget {
               padding: const EdgeInsets.all(16.0),
               child: Icon(
                 icon,
-                color: Colors.white,
+                color: AppColors.i.white,
               ),
             ),
           ),
           const SizedBox(height: 5),
           Text(
             text,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 14,
-            ),
+            style:  AppTypography.i.medium,
           )
         ],
       ),

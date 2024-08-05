@@ -1,7 +1,10 @@
 import 'dart:io';
 
+import 'package:appchat_with_gemini/app/core/constants/app_constants.dart';
+import 'package:appchat_with_gemini/app/core/helpers/size_extensions.dart';
 import 'package:appchat_with_gemini/app/core/ui/colors/app_colors.dart';
 import 'package:appchat_with_gemini/app/core/ui/style/app_typography.dart';
+import 'package:appchat_with_gemini/app/core/ui/widgets/ai_response_message_widget.dart';
 import 'package:appchat_with_gemini/app/page/home/components/suggested_question.dart';
 import 'package:appchat_with_gemini/app/page/home/model/message_model.dart';
 import 'package:flutter/material.dart';
@@ -25,8 +28,8 @@ class _HomeViewState extends State<HomeView> {
   late final TextEditingController inputController;
   bool showWindows = false;
   bool containsImage = false;
-  late FocusNode _focusNode;
   bool showWelcomeMessage = true;
+  
   void onItemTaped() {
     setState(() {
       showWindows = !showWindows;
@@ -95,6 +98,7 @@ class _HomeViewState extends State<HomeView> {
       inputController.clear();
       images = [];
       showWelcomeMessage = false;
+     
     });
 
     Future.delayed(const Duration(seconds: 2), () {
@@ -113,85 +117,26 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     inputController = TextEditingController();
-    _focusNode = FocusNode();
-    _focusNode.addListener(() {
-      if (_focusNode.hasFocus || inputController.text.isNotEmpty) {
-        setState(() {
-          showWelcomeMessage = !showWelcomeMessage;
-        });
-      } else {
-        setState(() {
-          showWelcomeMessage = true;
-        });
-      }
-    });
-
     super.initState();
   }
 
   @override
   void dispose() {
     inputController.dispose();
-    _focusNode.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:AppColors.i.primary, //const Color(0XFF1C1C1C),
+      backgroundColor:AppColors.i.primary,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Stack(
             children: [
                if (showWelcomeMessage)
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      CircleAvatar(
-                        radius: 12,
-                        backgroundColor: AppColors.i.white,
-                        child: Icon(
-                          Iconsax.dcube,
-                          size: 12,
-                          color: AppColors.i.primary,
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        'BoxAI',
-                        style: AppTypography.i.medium
-                            .copyWith(fontWeight: FontWeight.w600),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 4,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 35),
-                    child: Text(
-                      'Olá, sou a BoxAI! Com o poder do Gemini por trás de mim, estou aqui para tornar sua experiência incrível. Pergunte o que quiser, e eu farei o meu melhor para ajudar, no idioma que você preferir.',
-                      style: AppTypography.i.regular.copyWith(
-                        fontSize: 13,
-                        color: AppColors.i.greyShade400
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-           
+               AiResponseMessageWidget(message: AppConstants.i.defaultMessageAI),
                 GestureDetector(
                   onTap: onItemTaped,
                   child: Padding(
@@ -206,6 +151,7 @@ class _HomeViewState extends State<HomeView> {
                     ),
                   ),
                 ),
+              
               AnimatedPositioned(
                 bottom: !showWindows && images != null ? 65 : -150,
                 duration: const Duration(milliseconds: 800),
@@ -239,9 +185,9 @@ class _HomeViewState extends State<HomeView> {
               ),
                if (showWelcomeMessage)
               Positioned(
-                bottom: 200,
+                bottom:context.percentHeight(.1),
                 child: Align(
-                  alignment: Alignment.bottomCenter,
+                  alignment: Alignment.center,
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: Column(
@@ -336,21 +282,21 @@ class _HomeViewState extends State<HomeView> {
                   child: ColoredBox(
                     color:AppColors.i.primary,
                     child: TextFormField(
+                      controller: inputController,
                       style: const TextStyle(color: Colors.white),
                       onChanged: (value) {
                         setState(() {
                           inputController.text = value;
                         });
                       },
-                      controller: inputController,
-                      focusNode: _focusNode,
+                     
                       decoration: InputDecoration(
                         prefixIcon: GestureDetector(
                           onTap: () {
                             onItemTaped();
                           },
                           child:  Icon(
-                            Icons.attach_file_rounded,
+                            Iconsax.attach_circle,
                             color: AppColors.i.text,
                             size: 23,
                           ),
@@ -382,13 +328,13 @@ class _HomeViewState extends State<HomeView> {
                               child: Padding(
                                 padding: const EdgeInsets.all(6.0),
                                 child: CircleAvatar(
-                                  maxRadius: 20,
+                                  radius: 20,
                                   backgroundColor: inputController
                                               .text.isNotEmpty ||
                                           images!.isNotEmpty
                                       ? AppColors.i.text
                                       : AppColors.i.disableButton,
-                                  child: Icon(Iconsax.send_1,
+                                  child: Icon(Iconsax.arrow_up_3,
                                    // Icons.arrow_upward_outlined,
                                     color: inputController.text.isNotEmpty ||
                                             images!.isNotEmpty

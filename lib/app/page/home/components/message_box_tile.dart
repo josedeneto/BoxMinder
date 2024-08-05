@@ -1,5 +1,8 @@
 import 'dart:io';
 
+import 'package:appchat_with_gemini/app/core/ui/colors/app_colors.dart';
+import 'package:appchat_with_gemini/app/core/ui/style/app_typography.dart';
+import 'package:appchat_with_gemini/app/core/ui/widgets/ai_response_message_widget.dart';
 import 'package:flutter/material.dart';
 
 import '../model/message_model.dart';
@@ -14,7 +17,10 @@ class MessageBoxTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
+    if (!messageTile.isSentByme) {
+      return AiResponseMessageWidget(message: messageTile.message??'');
+    } else {
+      return ListTile(
       title: Align(
         alignment: messageTile.isSentByme
             ? Alignment.centerRight
@@ -52,23 +58,23 @@ class MessageBoxTile extends StatelessWidget {
                     bottomLeft: Radius.circular(10),
                   ),
                   color: messageTile.isSentByme
-                      ? const Color(0XFF232323)
+                      ? AppColors.i.borderSide
                       : Colors.transparent,
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
                     messageTile.message!,
-                    style: const TextStyle(color: Colors.white),
+                    style: AppTypography.i.medium.copyWith(fontSize: 14),
                   ),
                 ),
               ) 
               else if(messageTile.message!.isEmpty && messageTile.message==null)
-              const SizedBox.shrink()
-            
+              const SizedBox.shrink()   
           ],
         ),
       ),
     );
+    }
   }
 }
