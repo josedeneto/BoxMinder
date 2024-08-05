@@ -1,4 +1,3 @@
-import 'package:appchat_with_gemini/app/page/home/home_view.dart';
 import 'package:flutter/material.dart';
 
 import 'core/ui/theme/app_theme.dart';
@@ -17,7 +16,7 @@ class AppBoxAi extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: AppTheme.theme,
-        home: const HomeView(),
+        home: const SplashView(),
       ),
     );
   }
