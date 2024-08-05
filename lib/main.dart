@@ -1,7 +1,11 @@
 import 'package:appchat_with_gemini/app/app_box_ai.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+import 'app/services/user_service_impl.dart';
+
+void main()async {
    WidgetsFlutterBinding.ensureInitialized();
+    final userService = UserService();
+  await userService.initialize();
   runApp(const AppBoxAi());
 }

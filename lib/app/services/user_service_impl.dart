@@ -1,34 +1,36 @@
 import 'dart:developer';
 
-import 'package:appchat_with_gemini/app/core/helpers/shared_preferences_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class UserService {
+import '../core/helpers/shared_preferences_helper.dart';
+import 'user_service_i.dart';
+
+class UserServiceImpl implements UserServiceI {
   late final SharedPreferences _prefs;
 
-  UserService(){
-    _initializePrefs();
-  }
-  Future<void> _initializePrefs() async {
+  Future<void> initialize() async {
     _prefs = await SharedPreferencesHelper.getInstance();
   }
 
+  @override
   Future<void> setUserLoggedIn() async {
     try {
       await _prefs.setBool('isLoggedIn', true);
-    } catch (e) {
-      log("Erro ao salvar usuário como logado");
+    } catch (e, stackTrace) {
+      log("Erro ao salvar usuário como logado: $e", stackTrace: stackTrace);
     }
   }
 
+  @override
   Future<void> setUserLoggedOut() async {
-   try {
+    try {
       await _prefs.setBool('isLoggedIn', false);
-   } catch (e) {
-     log('Falha ao salvar logout do usário ');
-   }
+    } catch (e, stackTrace) {
+      log('Falha ao salvar logout do usuário: $e', stackTrace: stackTrace);
+    }
   }
 
+  @override
   Future<bool> checkLoginStatus() async {
     final isLoggedIn = _prefs.getBool('isLoggedIn') ?? false;
     return isLoggedIn;
