@@ -87,6 +87,7 @@ class _HomeViewState extends State<HomeView> {
   }
 
   void sendMessages() {
+    
     setState(() {
       messages.insert(
         0,
@@ -95,10 +96,11 @@ class _HomeViewState extends State<HomeView> {
             isSentByme: true,
             images: images?.map((image) => image.path).toList()),
       );
+     
       inputController.clear();
       images = [];
       showWelcomeMessage = false;
-     
+      showWindows = !showWindows;
     });
 
     Future.delayed(const Duration(seconds: 2), () {
@@ -184,65 +186,68 @@ class _HomeViewState extends State<HomeView> {
                 ),
               ),
                if (showWelcomeMessage)
-              Positioned(
-                bottom:context.percentHeight(.1),
-                child: Align(
-                  alignment: Alignment.center,
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          width: 150,
-                          child: DecoratedBox(
-                            decoration: BoxDecoration(
-                              border: Border.all(color: AppColors.i.borderSide),
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(6.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.light_mode_outlined,
-                                    color: AppColors.i.text,
-                                    size: 18,
-                                  ),
-                                  const SizedBox(
-                                    width: 3,
-                                  ),
-                                  Text(
-                                    'Exemplos',
-                                    style: AppTypography.i.light.copyWith(fontSize: 13),
-                                  )
-                                ],
+              Visibility(
+                visible: !showWindows,
+                child: Positioned(
+                  bottom:context.percentHeight(.1),
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            width: 150,
+                            child: DecoratedBox(
+                              decoration: BoxDecoration(
+                                border: Border.all(color: AppColors.i.borderSide),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(6.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.light_mode_outlined,
+                                      color: AppColors.i.text,
+                                      size: 18,
+                                    ),
+                                    const SizedBox(
+                                      width: 3,
+                                    ),
+                                    Text(
+                                      'Exemplos',
+                                      style: AppTypography.i.light.copyWith(fontSize: 13),
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        const SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              SuggestedQuestion(
-                                question: 'Roadmap 2024 para aprender Flutter',
-                              ),
-                              SuggestedQuestion(
-                                question: 'Contar uma piada para se divertir',
-                              ),
-                              SuggestedQuestion(
-                                question:
-                                    'Sugeria hábitos positivos para o bem-estar',
-                              )
-                            ],
+                          const SizedBox(
+                            height: 20,
                           ),
-                        ),
-                      ],
+                          const SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                SuggestedQuestion(
+                                  question: 'Roadmap 2024 para aprender Flutter',
+                                ),
+                                SuggestedQuestion(
+                                  question: 'Contar uma piada para se divertir',
+                                ),
+                                SuggestedQuestion(
+                                  question:
+                                      'Sugeria hábitos positivos para o bem-estar',
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
