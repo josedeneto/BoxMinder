@@ -13,6 +13,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import 'components/image_selected_widget.dart';
 import 'components/menu.dart';
 import 'components/menu_item.dart';
 import 'components/message_box_tile.dart';
@@ -99,7 +100,7 @@ class _HomeViewState extends State<HomeView> {
       inputController.clear();
       images = [];
       showWelcomeMessage = false;
-      showWindows = !showWindows;
+    
     });
 
     Future.delayed(const Duration(seconds: 2), () {
@@ -107,7 +108,7 @@ class _HomeViewState extends State<HomeView> {
         messages.insert(
           0,
           MessageModel(
-            message: "Reply to ${inputController.text}",
+            message: "Reply to ssssssssssssssssssssssss${inputController.text}",
             isSentByme: false,
           ),
         );
@@ -165,30 +166,7 @@ class _HomeViewState extends State<HomeView> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: images!
                           .map(
-                            (i) => Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 2),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: Stack(
-                                  children: [
-                                    Image.file(
-                                      File(i.path),
-                                      fit: BoxFit.cover,
-                                      width: 100,
-                                      height: 80,
-                                    ),
-                                    Positioned(
-                                    top: 2,
-                                    right: 2,
-                                    child: GestureDetector(
-                                    child: CircleAvatar(
-                                    radius: 8,
-                                    backgroundColor: AppColors.i.primary,child:  Icon(Icons.close, size: 12,color: AppColors.i.white,),),))
-                                  ],
-                                ),
-                              ),
-                            ),
+                            (i) => ImageSelectWidget(image:i),
                           )
                           .toList(),
                     ),
@@ -197,7 +175,7 @@ class _HomeViewState extends State<HomeView> {
               ),
               if (showWelcomeMessage)
                 Visibility(
-                  visible: !showWindows,
+                  visible: !showWindows&&images!.isEmpty,
                   child: Positioned(
                     bottom: context.percentHeight(.1),
                     child: Align(
@@ -314,7 +292,7 @@ class _HomeViewState extends State<HomeView> {
                             onItemTaped();
                           },
                           child: Icon(
-                            Iconsax.attach_circle,
+                              Iconsax.paperclip,
                             color: AppColors.i.text,
                             size: 23,
                           ),

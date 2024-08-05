@@ -3,11 +3,13 @@ import 'package:iconsax/iconsax.dart';
 
 import '../colors/app_colors.dart';
 import '../style/app_typography.dart';
+import 'icon_button_message_widget.dart';
 
 class AiResponseMessageWidget extends StatelessWidget {
   final String message;
-  const AiResponseMessageWidget({super.key, required this.message});
-
+  final bool isWelcomeMessage;
+  const AiResponseMessageWidget({super.key, required this.message, this.isWelcomeMessage=true});
+  
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -45,7 +47,7 @@ class AiResponseMessageWidget extends StatelessWidget {
           height: 4,
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 35, bottom: 20),
+          padding: const EdgeInsets.only(left: 35, bottom: 10),
           child: Text(
             message,
             style: AppTypography.i.medium.copyWith(
@@ -54,6 +56,23 @@ class AiResponseMessageWidget extends StatelessWidget {
             ),
           ),
         ),
+        if(!isWelcomeMessage)...[
+          Padding(
+            padding: const EdgeInsets.only(bottom: 10, left: 10,),
+            child: Row(
+             mainAxisSize: MainAxisSize.min,
+               mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                 IconButtonMessageWidget(icon: Iconsax.volume_high,onPressed: (){},),
+                 IconButtonMessageWidget(icon: Iconsax.document_copy,onPressed: (){},),
+                 IconButtonMessageWidget(icon: Iconsax.share,onPressed: (){},),
+                 IconButtonMessageWidget(icon: Iconsax.like_1,onPressed: (){},),
+                 IconButtonMessageWidget(icon: Iconsax.dislike,onPressed: (){},), 
+              ],
+            ),
+          ),
+          
+        ]
       ],
     );
   }
