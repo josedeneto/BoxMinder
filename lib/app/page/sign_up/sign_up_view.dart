@@ -22,7 +22,8 @@ class _SignUpViewState extends State<SignUpView> {
         leading: IconButton.filled(
           color: AppColors.i.white,
           style: ButtonStyle(
-              backgroundColor: WidgetStatePropertyAll(AppColors.i.border),),
+            backgroundColor: WidgetStatePropertyAll(AppColors.i.border),
+          ),
           onPressed: () {},
           icon: const Icon(Icons.arrow_back),
         ),
