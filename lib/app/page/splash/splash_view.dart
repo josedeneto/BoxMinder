@@ -1,6 +1,5 @@
 import 'package:appchat_with_gemini/app/core/ui/colors/app_colors.dart';
 import 'package:appchat_with_gemini/app/page/home/home_view.dart';
-import 'package:appchat_with_gemini/app/page/sign_in/sign_in_view.dart';
 import 'package:appchat_with_gemini/app/page/welcome/welcome_view.dart.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
@@ -18,9 +17,15 @@ class SplashView extends StatefulWidget {
 
 class _SplashViewState extends State<SplashView> {
   late UserServiceI userService;
+
+  Future<void> _initialize() async {
+    await Future.delayed(const Duration(seconds: 3));
+    await checkUserStatus();
+  }
+
   Future<void> checkUserStatus() async {
     final navigator = Navigator.of(context);
-    await Future.delayed(const Duration(seconds: 3));
+
     final isLoggedIn = await userService.checkLoginStatus();
     if (isLoggedIn) {
       navigator.pushReplacement(
@@ -40,7 +45,7 @@ class _SplashViewState extends State<SplashView> {
   @override
   void initState() {
     userService = UserServiceImpl();
-    checkUserStatus();
+    _initialize();
     super.initState();
   }
 

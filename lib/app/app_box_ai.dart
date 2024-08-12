@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'core/ui/theme/app_theme.dart';
+import 'page/sign_up/sign_up_view.dart';
 import 'page/splash/splash_view.dart';
 
 class AppBoxAi extends StatelessWidget {
@@ -16,7 +17,7 @@ class AppBoxAi extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: AppTheme.theme,
-        home: const SplashView(),
+        home: const SignUpView(),
       ),
     );
   }
