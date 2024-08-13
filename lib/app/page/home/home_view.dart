@@ -141,7 +141,7 @@ class _HomeViewState extends State<HomeView> {
                 AiResponseMessageWidget(
                     message: AppConstants.i.defaultMessageAI),
               GestureDetector(
-                onTap: onItemTaped,
+                onTap: hiddenMenu,
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 55),
                   child: ListView.builder(

@@ -1,8 +1,10 @@
+import 'package:appchat_with_gemini/app/routes/app_routes.dart';
+import 'package:appchat_with_gemini/app/services/user_service_i.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'core/ui/theme/app_theme.dart';
-import 'page/sign_up/sign_up_view.dart';
-import 'page/splash/splash_view.dart';
+import 'services/user_service_impl.dart';
 
 class AppBoxAi extends StatelessWidget {
   const AppBoxAi({super.key});
@@ -14,10 +16,14 @@ class AppBoxAi extends StatelessWidget {
       onTap: () {
         FocusScope.of(context).unfocus();
       },
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: AppTheme.theme,
-        home: const SignUpView(),
+      child: Provider<UserServiceI>(
+        create: (context) => UserServiceImpl()..initialize(),
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.theme,
+          initialRoute: AppRoutes.boxai,
+          routes: AppRoutes.routes,
+        ),
       ),
     );
   }

@@ -1,12 +1,12 @@
 import 'package:appchat_with_gemini/app/core/ui/colors/app_colors.dart';
 import 'package:appchat_with_gemini/app/core/ui/widgets/custom_button.dart';
-import 'package:appchat_with_gemini/app/page/sign_in/sign_in_view.dart';
+import 'package:appchat_with_gemini/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '../../core/ui/style/app_typography.dart';
 import '../../core/ui/widgets/login_button_with_google.dart';
-import '../sign_up/sign_up_view.dart';
+
 
 class WelcomeView extends StatefulWidget {
   const WelcomeView({super.key});
@@ -58,7 +58,7 @@ class _WelcomeViewState extends State<WelcomeView> {
                   child: CustomButton(
                     text: 'Regista-se gratuitamente',
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (_)=>const SignUpView()));
+                      Navigator.pushNamed(context, AppRoutes.signUp);
                     },
                   ),
                 ),
@@ -74,16 +74,11 @@ class _WelcomeViewState extends State<WelcomeView> {
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => const SignInView(),
-                      ),
-                    );
+                    Navigator.pushNamed(context, AppRoutes.signIn);
                   },
                   child: Text(
                     "Iniciar sessão",
-                    style: AppTypography.i.regular,
+                    style: AppTypography.i.medium,
                   ),
                 )
               ],

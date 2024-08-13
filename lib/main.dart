@@ -8,8 +8,8 @@ void main()async {
     final userService = UserServiceImpl();
   await userService.initialize();
    await Supabase.initialize(
-    url: 'https://dnyfgutswnqdtavsbner.supabase.co',
-    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRueWZndXRzd25xZHRhdnNibmVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjMxMjYyNjMsImV4cCI6MjAzODcwMjI2M30.QrIjg24vp_8cEAH2qhv9o01iC7KX98WSCxa3BM8GnQQ',
+    url: 'https://cadcotqkjjpvkbmxpqpn.supabase.co',
+    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNhZGNvdHFrampwdmtibXhwcXBuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjM1NTY5OTUsImV4cCI6MjAzOTEzMjk5NX0.WAJMlaKlFwNNR3uor2gL1hlkJFYoD-Cllv-l_ZXY-Po',
   );
   runApp(const AppBoxAi());
 }

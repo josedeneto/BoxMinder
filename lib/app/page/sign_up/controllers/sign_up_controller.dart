@@ -7,7 +7,7 @@ import 'package:appchat_with_gemini/app/page/sign_up/repositories/sign_up_reposi
 
 class SignUpController extends ChangeNotifier {
   final SignUpRepositoryI signUpRepository;
-  late bool _isLoading;
+   bool _isLoading = false;
 
   bool get isLoading =>_isLoading;
   String? get errorMessage => _errorMessage;
@@ -16,12 +16,11 @@ class SignUpController extends ChangeNotifier {
     required this.signUpRepository,
   });
 
-  void signUp(String email, String password) {
+  Future<void> signUp(String email, String password)async {
     _isLoading = true;
     notifyListeners();
      try {
-        signUpRepository.signUp(UserModel(
-      name: email,
+        await signUpRepository.signUp(UserModel(
       email: email,
       password: password,
     ));

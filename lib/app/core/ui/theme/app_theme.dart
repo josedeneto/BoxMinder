@@ -11,21 +11,15 @@ class AppTheme {
       isDense: true,
       hintStyle: AppTypography.i.medium
           .copyWith(color: AppColors.i.secondaryHintColor, fontSize: 15),
-      border: AppStyle.i.defaulTextFieldBorder.copyWith(
-        borderRadius: BorderRadius.circular(50),
-      ),
-      focusedBorder: AppStyle.i.defaulTextFieldBorder.copyWith(
-        borderRadius: BorderRadius.circular(50),
-      ),
+      border: AppStyle.i.defaulTextFieldBorder,
+      focusedBorder: AppStyle.i.defaulTextFieldBorder,
       focusedErrorBorder: const OutlineInputBorder(
         borderSide: BorderSide.none,
       ),
       errorBorder: const OutlineInputBorder(
         borderSide: BorderSide.none,
       ),
-      enabledBorder: AppStyle.i.defaulTextFieldBorder.copyWith(
-        borderRadius: BorderRadius.circular(50),
-      ),
+      enabledBorder: AppStyle.i.defaulTextFieldBorder,
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(style: AppStyle.i.buttonStyle),
   );
