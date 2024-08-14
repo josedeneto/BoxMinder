@@ -26,9 +26,9 @@ class _SplashViewState extends State<SplashView> {
     final navigator = Navigator.of(context);
     final isLoggedIn = await userService.checkLoginStatus();
     if (isLoggedIn) {
-      navigator.pushNamed(AppRoutes.home);
+      navigator.pushReplacementNamed(AppRoutes.home);
     } else {
-      navigator.pushNamed(AppRoutes.welcome);
+       navigator.pushReplacementNamed(AppRoutes.welcome);
     }
   }
 
