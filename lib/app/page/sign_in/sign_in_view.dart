@@ -110,6 +110,7 @@ class _SignUpViewState extends State<SignInView> with MessageDialog {
                         ),
                         TextFormField(
                           enabled: !controller.isLoading,
+                          obscureText: true,
                           decoration: InputDecoration(
                             hintStyle: AppTypography.i.regular.copyWith(
                                 color: AppColors.i.secondaryHintColor,
@@ -154,7 +155,7 @@ class _SignUpViewState extends State<SignInView> with MessageDialog {
                                 await controller.signIn(
                                     _emailC.text, _passwordC.text);
                                 navigator.pop();
-                                navigator.pushNamed(AppRoutes.home);
+                                navigator.pushReplacementNamed(AppRoutes.signIn);
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(

@@ -72,7 +72,7 @@ class _SignUpViewState extends State<SignUpView> with MessageDialog {
                       Text(
                         'Para começar informe os seus dados de acesso',
                         style: AppTypography.i.light
-                            .copyWith(color: AppColors.i.border),
+                            .copyWith(color: AppColors.i.secondaryHintColor),
                       ),
                       const SizedBox(
                         height: 25,
@@ -103,6 +103,7 @@ class _SignUpViewState extends State<SignUpView> with MessageDialog {
                       ),
                       TextFormField(
                         enabled: !controller.isLoading,
+                        obscureText: true,
                         controller: senhaC,
                         decoration: InputDecoration(
                           hintStyle: AppTypography.i.regular.copyWith(
@@ -136,7 +137,7 @@ class _SignUpViewState extends State<SignUpView> with MessageDialog {
                         await controller.signUp(
                             emailC.text.trim(), senhaC.text.trim());
                         navigator.pop();
-                        navigator.pushNamed(AppRoutes.boxai);
+                        navigator.pushReplacementNamed(AppRoutes.boxai);
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(

@@ -1,16 +1,19 @@
+import 'dart:developer';
+
+import 'package:appchat_with_gemini/app/core/config/app_config.dart';
 import 'package:appchat_with_gemini/app/core/constants/app_constants.dart';
-import 'package:appchat_with_gemini/app/core/helpers/size_extensions.dart';
+import 'package:appchat_with_gemini/app/core/helpers/mixins/snackbar_mixins.dart';
+import 'package:appchat_with_gemini/app/core/helpers/mixins/toast_mixins.dart';
 import 'package:appchat_with_gemini/app/core/ui/colors/app_colors.dart';
-import 'package:appchat_with_gemini/app/core/ui/style/app_typography.dart';
 import 'package:appchat_with_gemini/app/core/ui/widgets/ai_response_message_widget.dart';
-import 'package:appchat_with_gemini/app/page/home/components/suggested_question.dart';
 import 'package:appchat_with_gemini/app/page/home/model/message_model.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:google_generative_ai/google_generative_ai.dart';
 
+import 'components/example_questions.dart';
 import 'components/image_selected_widget.dart';
 import 'components/menu.dart';
 import 'components/menu_item.dart';
@@ -23,12 +26,15 @@ class HomeView extends StatefulWidget {
   State<HomeView> createState() => _HomeViewState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class _HomeViewState extends State<HomeView> with ToastMixins, SnackbarMixins {
   late final TextEditingController inputController;
   bool showWindows = false;
   bool containsImage = false;
   bool showWelcomeMessage = true;
-
+  late String modelResponseAI;
+  bool isLoading = false;
+  /* late final modelAi = GenerativeModel(
+      model: 'gemini-1.5-flash-latest', apiKey: AppConfig.i.geminiApiKey);*/
   void onItemTaped() {
     setState(() {
       showWindows = !showWindows;
@@ -45,34 +51,23 @@ class _HomeViewState extends State<HomeView> {
   List<MessageModel> messages = [];
   final imagePicker = ImagePicker();
   Future<void> checkAndRequestPermission() async {
-    final snackBar = ScaffoldMessenger.of(context);
-    var permission = await Permission.storage.status;
-
-    if (permission.isDenied) {
-      permission = await Permission.storage.request();
-    }
-
+    var permission = await Permission.photos.status;
     if (permission.isGranted) {
-      selectImages();
+      log('Permissão já concedida');
     } else if (permission.isDenied) {
-      Fluttertoast.showToast(
-        msg: "Permissão negada",
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.CENTER,
-        textColor: Colors.white,
-        backgroundColor: const Color.fromARGB(100, 0, 0, 0),
-      );
+      permission = await Permission.photos.request();
+      if (permission.isGranted) {
+        selectImages();
+      } else {
+        showToast('Permissão negada');
+      }
     } else if (permission.isPermanentlyDenied) {
-      snackBar.showSnackBar(
-        SnackBar(
-          content: const Text(
-              'Permissão permanentemente negada. Abra as configurações para conceder permissão.'),
-          backgroundColor: Colors.red.shade700,
-          action: SnackBarAction(
-            textColor: Colors.white,
-            label: 'Abrir Configurações',
-            onPressed: () => openAppSettings(),
-          ),
+      showSnackBarError(
+        AppConstants.i.permanentlyDenied,
+        action: SnackBarAction(
+          textColor: Colors.white,
+          label: 'Abrir Configurações',
+          onPressed: () => openAppSettings(),
         ),
       );
     }
@@ -85,31 +80,45 @@ class _HomeViewState extends State<HomeView> {
     });
   }
 
-  void sendMessages() {
+  Future<void> sendMessages() async {
+    final prompt = TextPart(inputController.text);
+    final listImages = images != null
+        ? await Future.wait(
+            images!.map(
+              (image) async {
+                final bytes = await image.readAsBytes();
+                return DataPart('image/${image.path.split('.').last}', bytes);
+              },
+            ),
+          )
+        : [];
     setState(() {
+      isLoading = true;
       messages.insert(
         0,
         MessageModel(
-            message: inputController.text,
-            isSentByme: true,
-            images: images?.map((image) => image.path).toList()),
+            message: prompt.text, isSentByme: true, images: listImages),
       );
-
       inputController.clear();
       images = [];
       showWelcomeMessage = false;
     });
 
-    Future.delayed(const Duration(seconds: 2), () {
-      setState(() {
-        messages.insert(
-          0,
-          MessageModel(
-            message: "Reply to ssssssssssssssssssssssss${inputController.text}",
-            isSentByme: false,
-          ),
-        );
-      });
+    final content = [
+      Content.multi([prompt, ...listImages])
+    ];
+    final response = await AppConfig.i.modelAi.generateContent(content);
+    modelResponseAI = response.text!;
+
+    setState(() {
+      isLoading = false;
+      messages.insert(
+        0,
+        MessageModel(
+          message: modelResponseAI,
+          isSentByme: false,
+        ),
+      );
     });
   }
 
@@ -131,7 +140,10 @@ class _HomeViewState extends State<HomeView> {
       backgroundColor: AppColors.i.primary,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8,),
+          padding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 8,
+          ),
           child: Stack(
             children: [
               if (showWelcomeMessage)
@@ -172,76 +184,7 @@ class _HomeViewState extends State<HomeView> {
                 ),
               ),
               if (showWelcomeMessage)
-                Visibility(
-                  visible: !showWindows && images!.isEmpty,
-                  child: Positioned(
-                    bottom: context.percentHeight(.1),
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              width: 150,
-                              child: DecoratedBox(
-                                decoration: BoxDecoration(
-                                  border:
-                                      Border.all(color: AppColors.i.borderSide),
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(6.0),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.light_mode_outlined,
-                                        color: AppColors.i.text,
-                                        size: 18,
-                                      ),
-                                      const SizedBox(
-                                        width: 3,
-                                      ),
-                                      Text(
-                                        'Exemplos',
-                                        style: AppTypography.i.light
-                                            .copyWith(fontSize: 13),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            const SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  SuggestedQuestion(
-                                    question:
-                                        'Roadmap 2024 para aprender Flutter',
-                                  ),
-                                  SuggestedQuestion(
-                                    question:
-                                        'Contar uma piada para se divertir',
-                                  ),
-                                  SuggestedQuestion(
-                                    question:
-                                        'Sugeria hábitos positivos para o bem-estar',
-                                  )
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                ExampleQuestions(showWindows: showWindows, images: images),
               Menu(
                 showWindows: showWindows,
                 child: Row(
@@ -325,11 +268,14 @@ class _HomeViewState extends State<HomeView> {
                                   radius: 20,
                                   backgroundColor:
                                       inputController.text.isNotEmpty ||
-                                              images!.isNotEmpty
+                                              images!.isNotEmpty ||
+                                              isLoading
                                           ? AppColors.i.text
                                           : AppColors.i.disableButton,
                                   child: Icon(
-                                    Iconsax.arrow_up_3,
+                                    isLoading
+                                        ? Icons.stop_rounded
+                                        : Iconsax.arrow_up_3,
                                     color: inputController.text.isNotEmpty ||
                                             images!.isNotEmpty
                                         ? AppColors.i.primary

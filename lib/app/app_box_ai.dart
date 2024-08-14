@@ -19,6 +19,7 @@ class AppBoxAi extends StatelessWidget {
       child: Provider<UserServiceI>(
         create: (context) => UserServiceImpl()..initialize(),
         child: MaterialApp(
+          title: 'BoxAI',
           debugShowCheckedModeBanner: false,
           theme: AppTheme.theme,
           initialRoute: AppRoutes.splash,

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:appchat_with_gemini/app/core/ui/colors/app_colors.dart';
 import 'package:appchat_with_gemini/app/core/ui/style/app_typography.dart';
 import 'package:appchat_with_gemini/app/core/ui/widgets/ai_response_message_widget.dart';
@@ -18,7 +16,10 @@ class MessageBoxTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (!messageTile.isSentByme) {
-      return AiResponseMessageWidget(message: messageTile.message ?? '',isWelcomeMessage: false,);
+      return AiResponseMessageWidget(
+        message: messageTile.message ?? '',
+        isWelcomeMessage: false,
+      );
     } else {
       return ListTile(
         title: Align(
@@ -39,8 +40,8 @@ class MessageBoxTile extends StatelessWidget {
                           height: messageTile.images!.length == 1 ? 150 : 100,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(12),
-                            child: Image.file(
-                              File(image),
+                            child: Image.memory(
+                              image.bytes,
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -48,25 +49,27 @@ class MessageBoxTile extends StatelessWidget {
                       )
                       .toList(),
                 ),
-              
               if (messageTile.message != null &&
                   messageTile.message!.isNotEmpty)
-                DecoratedBox(
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(10),
-                      topRight: Radius.circular(10),
-                      bottomLeft: Radius.circular(10),
+                Padding(
+                  padding: const EdgeInsets.only(top: 6),
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10),
+                        bottomLeft: Radius.circular(10),
+                      ),
+                      color: messageTile.isSentByme
+                          ? AppColors.i.borderSide
+                          : Colors.transparent,
                     ),
-                    color: messageTile.isSentByme
-                        ? AppColors.i.borderSide
-                        : Colors.transparent,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      messageTile.message!,
-                      style: AppTypography.i.medium.copyWith(fontSize: 14),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        messageTile.message!,
+                        style: AppTypography.i.medium.copyWith(fontSize: 14),
+                      ),
                     ),
                   ),
                 )
