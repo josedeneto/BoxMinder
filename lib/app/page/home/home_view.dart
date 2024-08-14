@@ -1,5 +1,3 @@
-
-
 import 'package:appchat_with_gemini/app/core/constants/app_constants.dart';
 import 'package:appchat_with_gemini/app/core/helpers/size_extensions.dart';
 import 'package:appchat_with_gemini/app/core/ui/colors/app_colors.dart';
@@ -100,7 +98,6 @@ class _HomeViewState extends State<HomeView> {
       inputController.clear();
       images = [];
       showWelcomeMessage = false;
-    
     });
 
     Future.delayed(const Duration(seconds: 2), () {
@@ -134,12 +131,13 @@ class _HomeViewState extends State<HomeView> {
       backgroundColor: AppColors.i.primary,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8,),
           child: Stack(
             children: [
               if (showWelcomeMessage)
                 AiResponseMessageWidget(
-                    message: AppConstants.i.defaultMessageAI),
+                  message: AppConstants.i.defaultMessageAI,
+                ),
               GestureDetector(
                 onTap: hiddenMenu,
                 child: Padding(
@@ -166,7 +164,7 @@ class _HomeViewState extends State<HomeView> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: images!
                           .map(
-                            (i) => ImageSelectWidget(image:i),
+                            (i) => ImageSelectWidget(image: i),
                           )
                           .toList(),
                     ),
@@ -175,7 +173,7 @@ class _HomeViewState extends State<HomeView> {
               ),
               if (showWelcomeMessage)
                 Visibility(
-                  visible: !showWindows&&images!.isEmpty,
+                  visible: !showWindows && images!.isEmpty,
                   child: Positioned(
                     bottom: context.percentHeight(.1),
                     child: Align(
@@ -292,7 +290,7 @@ class _HomeViewState extends State<HomeView> {
                             onItemTaped();
                           },
                           child: Icon(
-                              Iconsax.paperclip,
+                            Iconsax.paperclip,
                             color: AppColors.i.text,
                             size: 23,
                           ),

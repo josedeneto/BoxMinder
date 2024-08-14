@@ -21,7 +21,7 @@ class AppBoxAi extends StatelessWidget {
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: AppTheme.theme,
-          initialRoute: AppRoutes.boxai,
+          initialRoute: AppRoutes.splash,
           routes: AppRoutes.routes,
         ),
       ),
