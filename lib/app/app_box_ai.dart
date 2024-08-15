@@ -14,7 +14,7 @@ class AppBoxAi extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
-        FocusScope.of(context).unfocus();
+        FocusManager.instance.primaryFocus?.unfocus();
       },
       child: Provider<UserServiceI>(
         create: (context) => UserServiceImpl()..initialize(),

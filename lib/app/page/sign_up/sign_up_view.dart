@@ -46,7 +46,9 @@ class _SignUpViewState extends State<SignUpView> with MessageDialog {
             style: ButtonStyle(
               backgroundColor: WidgetStatePropertyAll(AppColors.i.border),
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pop(context);
+            },
             icon: const Icon(Icons.arrow_back),
           ),
         ),
