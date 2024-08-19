@@ -39,3 +39,46 @@ mixin MessageDialog<T extends StatefulWidget> on State<T> {
     );
   }
 }
+
+
+
+Future<void> showExitconfirmationDialog(BuildContext context) async {
+  final shouldExit = await showAdaptiveDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: AppColors.i.secondaryHintColor,
+          title: Text('Sair da aplicação', style: AppTypography.i.medium),
+          content: Text(
+            'Tem a certeza que quer sair da aplicação?',
+            style: AppTypography.i.light,
+          ),
+          actions: [
+            TextButton(
+              style: TextButton.styleFrom(foregroundColor: AppColors.i.text),
+              onPressed: () {
+                Navigator.pop(context, false);
+              },
+              child: const Text('Cancelar'),
+            ),
+            FilledButton(
+              style: FilledButton.styleFrom(
+                backgroundColor: AppColors.i.text,
+                foregroundColor: AppColors.i.primary,
+              ),
+              onPressed: () {
+                Navigator.pop(context, true);
+              },
+              child: Text(
+                'Sim quero sair',
+                style: AppTypography.i.regular.copyWith(
+                  color: AppColors.i.secondaryHintColor,
+                ),
+              ),
+            )
+          ],
+        );
+      });
+  return shouldExit ?? false;
+}

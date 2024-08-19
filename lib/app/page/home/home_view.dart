@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:appchat_with_gemini/app/core/config/app_config.dart';
 import 'package:appchat_with_gemini/app/core/constants/app_constants.dart';
 import 'package:appchat_with_gemini/app/core/helpers/mixins/snackbar_mixins.dart';
@@ -13,6 +12,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 
+import '../../core/helpers/mixins/dialog_mixins.dart';
 import 'components/example_questions.dart';
 import 'components/image_selected_widget.dart';
 import 'components/menu.dart';
@@ -26,15 +26,14 @@ class HomeView extends StatefulWidget {
   State<HomeView> createState() => _HomeViewState();
 }
 
-class _HomeViewState extends State<HomeView> with ToastMixins, SnackbarMixins {
+class _HomeViewState extends State<HomeView> with ToastMixins, SnackbarMixins, MessageDialog {
   late final TextEditingController inputController;
   bool showWindows = false;
   bool containsImage = false;
   bool showWelcomeMessage = true;
   late String modelResponseAI;
   bool isLoading = false;
-  /* late final modelAi = GenerativeModel(
-      model: 'gemini-1.5-flash-latest', apiKey: AppConfig.i.geminiApiKey);*/
+  
   void onItemTaped() {
     setState(() {
       showWindows = !showWindows;
@@ -121,6 +120,7 @@ class _HomeViewState extends State<HomeView> with ToastMixins, SnackbarMixins {
       );
     });
   }
+  
 
   @override
   void initState() {
@@ -138,160 +138,166 @@ class _HomeViewState extends State<HomeView> with ToastMixins, SnackbarMixins {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.i.primary,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 8,
-          ),
-          child: Stack(
-            children: [
-              if (showWelcomeMessage)
-                AiResponseMessageWidget(
-                  message: AppConstants.i.defaultMessageAI,
-                ),
-              GestureDetector(
-                onTap: hiddenMenu,
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 55),
-                  child: ListView.builder(
-                    reverse: true,
-                    itemCount: messages.length,
-                    itemBuilder: (context, m) {
-                      final messageTile = messages[m];
-                      return MessageBoxTile(messageTile: messageTile);
-                    },
+      body: PopScope(
+        canPop: false,
+        onPopInvoked: (didPop) async {
+          return await showExitconfirmationDialog(context);
+        },
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 8,
+            ),
+            child: Stack(
+              children: [
+                if (showWelcomeMessage)
+                  AiResponseMessageWidget(
+                    message: AppConstants.i.defaultMessageAI,
                   ),
-                ),
-              ),
-              AnimatedPositioned(
-                bottom: !showWindows && images != null ? 65 : -150,
-                duration: const Duration(milliseconds: 800),
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: 80,
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: images!
-                          .map(
-                            (i) => ImageSelectWidget(image: i),
-                          )
-                          .toList(),
+                GestureDetector(
+                  onTap: hiddenMenu,
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 55),
+                    child: ListView.builder(
+                      reverse: true,
+                      itemCount: messages.length,
+                      itemBuilder: (context, m) {
+                        final messageTile = messages[m];
+                        return MessageBoxTile(messageTile: messageTile);
+                      },
                     ),
                   ),
                 ),
-              ),
-              if (showWelcomeMessage)
-                ExampleQuestions(showWindows: showWindows, images: images),
-              Menu(
-                showWindows: showWindows,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    MenuItemTile(
-                      icon: Iconsax.image,
-                      text: 'Galeria',
-                      onTap: () {
-                        hiddenMenu();
-                        checkAndRequestPermission();
-                      },
+                AnimatedPositioned(
+                  bottom: !showWindows && images != null ? 65 : -150,
+                  duration: const Duration(milliseconds: 800),
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    height: 80,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: images!
+                            .map(
+                              (i) => ImageSelectWidget(image: i),
+                            )
+                            .toList(),
+                      ),
                     ),
-                    MenuItemTile(
-                      icon: Iconsax.document,
-                      text: 'Documento',
-                      onTap: () {},
-                    ),
-                    MenuItemTile(
-                      icon: Iconsax.audio_square,
-                      text: 'Áudio',
-                      onTap: () {},
-                    ),
-                  ],
+                  ),
                 ),
-              ),
-              Positioned(
-                bottom: 0,
-                right: 0,
-                left: 0,
-                child: SizedBox(
-                  width: MediaQuery.sizeOf(context).width,
-                  child: ColoredBox(
-                    color: AppColors.i.primary,
-                    child: TextFormField(
-                      controller: inputController,
-                      style: const TextStyle(color: Colors.white),
-                      onChanged: (value) {
-                        setState(() {
-                          inputController.text = value;
-                        });
-                      },
-                      decoration: InputDecoration(
-                        prefixIcon: GestureDetector(
-                          onTap: () {
-                            onItemTaped();
-                          },
-                          child: Icon(
-                            Iconsax.paperclip,
-                            color: AppColors.i.text,
-                            size: 23,
-                          ),
-                        ),
-                        hintText: "Type your message...",
-                        suffixIcon: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            if (inputController.text.isEmpty)
-                              GestureDetector(
-                                onTap: () {},
-                                child: Icon(
-                                  Icons.mic_none_rounded,
-                                  color: AppColors.i.text,
-                                  size: 26,
-                                ),
-                              ),
-                            const SizedBox(
-                              width: 5,
+                if (showWelcomeMessage)
+                  ExampleQuestions(showWindows: showWindows, images: images),
+                Menu(
+                  showWindows: showWindows,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      MenuItemTile(
+                        icon: Iconsax.image,
+                        text: 'Galeria',
+                        onTap: () {
+                          hiddenMenu();
+                          checkAndRequestPermission();
+                        },
+                      ),
+                      MenuItemTile(
+                        icon: Iconsax.document,
+                        text: 'Documento',
+                        onTap: () {},
+                      ),
+                      MenuItemTile(
+                        icon: Iconsax.audio_square,
+                        text: 'Áudio',
+                        onTap: () {},
+                      ),
+                    ],
+                  ),
+                ),
+                Positioned(
+                  bottom: 0,
+                  right: 0,
+                  left: 0,
+                  child: SizedBox(
+                    width: MediaQuery.sizeOf(context).width,
+                    child: ColoredBox(
+                      color: AppColors.i.primary,
+                      child: TextFormField(
+                        controller: inputController,
+                        style: const TextStyle(color: Colors.white),
+                        onChanged: (value) {
+                          setState(() {
+                            inputController.text = value;
+                          });
+                        },
+                        decoration: InputDecoration(
+                          prefixIcon: GestureDetector(
+                            onTap: () {
+                              onItemTaped();
+                            },
+                            child: Icon(
+                              Iconsax.paperclip,
+                              color: AppColors.i.text,
+                              size: 23,
                             ),
-                            GestureDetector(
-                              onTap: inputController.text.isEmpty &&
-                                      images!.isEmpty
-                                  ? null
-                                  : () {
-                                      sendMessages();
-                                    },
-                              child: Padding(
-                                padding: const EdgeInsets.all(6.0),
-                                child: CircleAvatar(
-                                  radius: 20,
-                                  backgroundColor:
-                                      inputController.text.isNotEmpty ||
-                                              images!.isNotEmpty ||
-                                              isLoading
-                                          ? AppColors.i.text
-                                          : AppColors.i.disableButton,
+                          ),
+                          hintText: "Type your message...",
+                          suffixIcon: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              if (inputController.text.isEmpty)
+                                GestureDetector(
+                                  onTap: () {},
                                   child: Icon(
-                                    isLoading
-                                        ? Icons.stop_rounded
-                                        : Iconsax.arrow_up_3,
-                                    color: inputController.text.isNotEmpty ||
-                                            images!.isNotEmpty
-                                        ? AppColors.i.primary
-                                        : AppColors.i.secondaryHintColor,
+                                    Icons.mic_none_rounded,
+                                    color: AppColors.i.text,
+                                    size: 26,
+                                  ),
+                                ),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              GestureDetector(
+                                onTap: inputController.text.isEmpty &&
+                                        images!.isEmpty
+                                    ? null
+                                    : () {
+                                        sendMessages();
+                                      },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(6.0),
+                                  child: CircleAvatar(
+                                    radius: 20,
+                                    backgroundColor:
+                                        inputController.text.isNotEmpty ||
+                                                images!.isNotEmpty ||
+                                                isLoading
+                                            ? AppColors.i.text
+                                            : AppColors.i.disableButton,
+                                    child: Icon(
+                                      isLoading
+                                          ? Icons.stop_rounded
+                                          : Iconsax.arrow_up_3,
+                                      color: inputController.text.isNotEmpty ||
+                                              images!.isNotEmpty
+                                          ? AppColors.i.primary
+                                          : AppColors.i.secondaryHintColor,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
