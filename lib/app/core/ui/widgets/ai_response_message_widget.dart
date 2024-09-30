@@ -47,7 +47,7 @@ class AiResponseMessageWidget extends StatelessWidget {
           height: 4,
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 35, bottom: 10),
+          padding: const EdgeInsets.only(left: 35, bottom: 5),
           child: Text(
             message,
             style: AppTypography.i.medium.copyWith(

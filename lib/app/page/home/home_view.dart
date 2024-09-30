@@ -52,6 +52,7 @@ class _HomeViewState extends State<HomeView> with ToastMixins, SnackbarMixins, M
   Future<void> checkAndRequestPermission() async {
     var permission = await Permission.photos.status;
     if (permission.isGranted) {
+       selectImages();
       log('Permissão já concedida');
     } else if (permission.isDenied) {
       permission = await Permission.photos.request();
@@ -199,8 +200,10 @@ class _HomeViewState extends State<HomeView> with ToastMixins, SnackbarMixins, M
                         icon: Iconsax.image,
                         text: 'Galeria',
                         onTap: () {
-                          hiddenMenu();
                           checkAndRequestPermission();
+                         
+                          hiddenMenu();
+                          
                         },
                       ),
                       MenuItemTile(
