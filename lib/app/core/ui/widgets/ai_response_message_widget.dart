@@ -1,15 +1,27 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '../colors/app_colors.dart';
 import '../style/app_typography.dart';
 import 'icon_button_message_widget.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 
-class AiResponseMessageWidget extends StatelessWidget {
+class AiResponseMessageWidget extends StatefulWidget {
   final String message;
   final bool isWelcomeMessage;
-  const AiResponseMessageWidget({super.key, required this.message, this.isWelcomeMessage=true});
-  
+
+  const AiResponseMessageWidget(
+      {super.key, required this.message, this.isWelcomeMessage = true});
+
+  @override
+  State<AiResponseMessageWidget> createState() => _AiResponseMessageWidgetState();
+}
+
+class _AiResponseMessageWidgetState extends State<AiResponseMessageWidget> {
+   FlutterTts flutterTts = FlutterTts();
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -49,29 +61,51 @@ class AiResponseMessageWidget extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(left: 35, bottom: 5),
           child: Text(
-            message,
+            widget.message,
             style: AppTypography.i.medium.copyWith(
               fontSize: 13,
               color: AppColors.i.greyShade400,
             ),
           ),
         ),
-        if(!isWelcomeMessage)...[
+        if (!widget.isWelcomeMessage) ...[
           Padding(
-            padding: const EdgeInsets.only(bottom: 10, left: 10,),
+            padding: const EdgeInsets.only(
+              bottom: 10,
+              left: 10,
+            ),
             child: Row(
-             mainAxisSize: MainAxisSize.min,
-               mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                 IconButtonMessageWidget(icon: Iconsax.volume_high,onPressed: (){},),
-                 IconButtonMessageWidget(icon: Iconsax.document_copy,onPressed: (){},),
-                 IconButtonMessageWidget(icon: Iconsax.share,onPressed: (){},),
-                 IconButtonMessageWidget(icon: Iconsax.like_1,onPressed: (){},),
-                 IconButtonMessageWidget(icon: Iconsax.dislike,onPressed: (){},), 
+                IconButtonMessageWidget(
+                  icon: Iconsax.volume_high,
+                  onPressed: () async {
+                    await flutterTts.speak(widget.message);
+                    await flutterTts.setLanguage("pt-BR");
+                    log('printei');
+                  },
+                ),
+                
+               IconButtonMessageWidget(
+                  icon: Iconsax.document_copy,
+                  onPressed: () {},
+                ),
+                IconButtonMessageWidget(
+                  icon: Iconsax.share,
+                  onPressed: () {},
+                ),
+                IconButtonMessageWidget(
+                  icon: Iconsax.like_1,
+                  onPressed: () {},
+                ),
+                IconButtonMessageWidget(
+                  icon: Iconsax.dislike,
+                  onPressed: () {},
+                ),
               ],
             ),
           ),
-          
         ]
       ],
     );

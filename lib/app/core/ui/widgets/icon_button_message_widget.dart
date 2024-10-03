@@ -17,7 +17,7 @@ class IconButtonMessageWidget extends StatelessWidget {
       onPressed: onPressed,
       icon: Icon(
         icon,
-        size: 16,
+        size: 20,
         color: AppColors.i.secondaryHintColor,
       ),
     );

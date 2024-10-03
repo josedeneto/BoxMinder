@@ -139,12 +139,7 @@ class _HomeViewState extends State<HomeView> with ToastMixins, SnackbarMixins, M
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.i.primary,
-      body: PopScope(
-        canPop: false,
-        onPopInvoked: (didPop) async {
-          return await showExitconfirmationDialog(context);
-        },
-        child: SafeArea(
+      body: SafeArea(
           child: Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: 16,
@@ -157,7 +152,7 @@ class _HomeViewState extends State<HomeView> with ToastMixins, SnackbarMixins, M
                     message: AppConstants.i.defaultMessageAI,
                   ),
                 GestureDetector(
-                  onTap: hiddenMenu,
+                  onTap: (){},
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 55),
                     child: ListView.builder(
@@ -171,7 +166,7 @@ class _HomeViewState extends State<HomeView> with ToastMixins, SnackbarMixins, M
                   ),
                 ),
                 AnimatedPositioned(
-                  bottom: !showWindows && images != null ? 65 : -150,
+                  bottom: !showWindows && images!.isNotEmpty ? 65 : -150,
                   duration: const Duration(milliseconds: 800),
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width,
@@ -201,9 +196,7 @@ class _HomeViewState extends State<HomeView> with ToastMixins, SnackbarMixins, M
                         text: 'Galeria',
                         onTap: () {
                           checkAndRequestPermission();
-                         
-                          hiddenMenu();
-                          
+                          hiddenMenu();  
                         },
                       ),
                       MenuItemTile(
@@ -232,15 +225,13 @@ class _HomeViewState extends State<HomeView> with ToastMixins, SnackbarMixins, M
                         style: const TextStyle(color: Colors.white),
                         onChanged: (value) {
                           setState(() {
-                            inputController.text = value;
+                            
                           });
                         },
                         decoration: InputDecoration(
-                          prefixIcon: GestureDetector(
-                            onTap: () {
-                              onItemTaped();
-                            },
-                            child: Icon(
+                          prefixIcon: IconButton(
+                            onPressed:onItemTaped,
+                            icon: Icon(
                               Iconsax.paperclip,
                               color: AppColors.i.text,
                               size: 23,
@@ -303,7 +294,7 @@ class _HomeViewState extends State<HomeView> with ToastMixins, SnackbarMixins, M
             ),
           ),
         ),
-      ),
-    );
+      );
+    
   }
 }

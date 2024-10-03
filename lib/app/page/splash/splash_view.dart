@@ -1,11 +1,11 @@
 import 'package:appchat_with_gemini/app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../core/ui/colors/app_colors.dart';
 import '../../core/ui/style/app_typography.dart';
-import '../../services/user_service_i.dart';
+
 
 class SplashView extends StatefulWidget {
   const SplashView({super.key});
@@ -15,28 +15,23 @@ class SplashView extends StatefulWidget {
 }
 
 class _SplashViewState extends State<SplashView> {
-  late UserServiceI userService;
-
-  Future<void> _initialize() async {
-    await Future.delayed(const Duration(seconds: 3));
-    await checkUserStatus();
-  }
 
   Future<void> checkUserStatus() async {
-    final navigator = Navigator.of(context);
-    final isLoggedIn = await userService.checkLoginStatus();
-    if (isLoggedIn) {
-      navigator.popAndPushNamed(AppRoutes.home);
+    
+    final isLoggedIn = await SharedPreferences.getInstance();
+    final result = isLoggedIn.getBool('isLoggedIn') ?? false;
+    if(!mounted)return;
+    if (result) {
+      Navigator.pushReplacementNamed(context, AppRoutes.home);
     } else {
-       navigator.popAndPushNamed(AppRoutes.welcome);
+      Navigator.pushReplacementNamed(context,AppRoutes.welcome);
     }
   }
 
   @override
   void initState() {
-    userService = context.read<UserServiceI>();
-    _initialize();
     super.initState();
+        checkUserStatus();
   }
 
   @override
