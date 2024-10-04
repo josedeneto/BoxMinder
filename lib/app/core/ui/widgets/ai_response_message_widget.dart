@@ -84,12 +84,15 @@ class _AiResponseMessageWidgetState extends State<AiResponseMessageWidget> {
                       setState(() {
                         isSpeaking = true;
                       });
-                      await flutterTts.speak(widget.message);
                       await flutterTts.setLanguage("pt-BR");
-                      flutterTts.awaitSynthCompletion(true);
-                      setState(() {
-                        isSpeaking = true;
+                      await flutterTts.speak(widget.message); 
+                      final result = await flutterTts.awaitSpeakCompletion(true);
+                      if(result==1){
+                         setState(() {
+                        isSpeaking = false;
                       });
+                      }
+                     
                     },
                   )
                 ] else ...[
