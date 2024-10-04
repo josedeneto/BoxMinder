@@ -8,13 +8,19 @@ class AppBoxAi extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'BoxAI',
-        debugShowCheckedModeBanner: false,
-        theme: AppTheme.theme,
-        initialRoute: AppRoutes.splash,
-        routes: AppRoutes.routes,
-      );
+    return GestureDetector(
+      behavior:HitTestBehavior.opaque,
+      onTap: (){
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: MaterialApp(
+          title: 'BoxAI',
+          debugShowCheckedModeBanner: false,
+          theme: AppTheme.theme,
+          initialRoute: AppRoutes.splash,
+          routes: AppRoutes.routes,
+        ),
+    );
     
   }
 }

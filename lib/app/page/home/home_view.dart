@@ -152,7 +152,9 @@ class _HomeViewState extends State<HomeView> with ToastMixins, SnackbarMixins, M
                     message: AppConstants.i.defaultMessageAI,
                   ),
                 GestureDetector(
-                  onTap: (){},
+                  onTap: (){
+                    if(showWindows)hiddenMenu();
+                  },
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 55),
                     child: ListView.builder(
@@ -221,12 +223,11 @@ class _HomeViewState extends State<HomeView> with ToastMixins, SnackbarMixins, M
                     child: ColoredBox(
                       color: AppColors.i.primary,
                       child: TextFormField(
+                        maxLines: null,
                         controller: inputController,
                         style: const TextStyle(color: Colors.white),
                         onChanged: (value) {
-                          setState(() {
-                            
-                          });
+                          setState(() {});
                         },
                         decoration: InputDecoration(
                           prefixIcon: IconButton(
@@ -260,6 +261,7 @@ class _HomeViewState extends State<HomeView> with ToastMixins, SnackbarMixins, M
                                     ? null
                                     : () {
                                         sendMessages();
+                                        FocusScope.of(context).unfocus();
                                       },
                                 child: Padding(
                                   padding: const EdgeInsets.all(6.0),

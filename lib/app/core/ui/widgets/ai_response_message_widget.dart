@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -16,12 +14,13 @@ class AiResponseMessageWidget extends StatefulWidget {
       {super.key, required this.message, this.isWelcomeMessage = true});
 
   @override
-  State<AiResponseMessageWidget> createState() => _AiResponseMessageWidgetState();
+  State<AiResponseMessageWidget> createState() =>
+      _AiResponseMessageWidgetState();
 }
 
 class _AiResponseMessageWidgetState extends State<AiResponseMessageWidget> {
-   FlutterTts flutterTts = FlutterTts();
-
+  FlutterTts flutterTts = FlutterTts();
+  var isSpeaking = false;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -78,16 +77,36 @@ class _AiResponseMessageWidgetState extends State<AiResponseMessageWidget> {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                if (!isSpeaking) ...[
+                  IconButtonMessageWidget(
+                    icon: Iconsax.volume_high,
+                    onPressed: () async {
+                      setState(() {
+                        isSpeaking = true;
+                      });
+                      await flutterTts.speak(widget.message);
+                      await flutterTts.setLanguage("pt-BR");
+                      flutterTts.awaitSynthCompletion(true);
+                      setState(() {
+                        isSpeaking = true;
+                      });
+                    },
+                  )
+                ] else ...[
+                  IconButtonMessageWidget(
+                    icon: Icons.stop_circle_rounded,
+                    onPressed: () async {
+                      final result = await flutterTts.stop();
+
+                      if (result == 1) {
+                        setState(() {
+                          isSpeaking = false;
+                        });
+                      }
+                    },
+                  )
+                ],
                 IconButtonMessageWidget(
-                  icon: Iconsax.volume_high,
-                  onPressed: () async {
-                    await flutterTts.speak(widget.message);
-                    await flutterTts.setLanguage("pt-BR");
-                    log('printei');
-                  },
-                ),
-                
-               IconButtonMessageWidget(
                   icon: Iconsax.document_copy,
                   onPressed: () {},
                 ),
